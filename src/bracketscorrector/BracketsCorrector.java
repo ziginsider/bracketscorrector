@@ -19,29 +19,39 @@ import java.io.OutputStream;
  */
 public class BracketsCorrector {
 
-    /**
-     * @param args the command line arguments
-     */
+    private static StackLinkedList<BracketType> stackBrackets = new StackLinkedList<>();  
+    
     public static void main(String[] args) {
         
         
-        correctBrackets("task_brackets.rtf");
+        correctBracketsInFile("task_brackets.rtf");
+        
+        StackLinkedList stack = new StackLinkedList();
         
     }
 
 
     
-    private static void correctBrackets(String fileName) {
+    private static void correctBracketsInFile(String fileName) {
         try {
             FileInputStream fstream = new FileInputStream(fileName);
             BufferedReader buffer = new BufferedReader(
                     new InputStreamReader(fstream));
             String fileLine;
             while ((fileLine = buffer.readLine()) != null) {
+                
+                fileLine = correctLine(fileLine);
                 writeLine(fileName, fileLine);
             }
         } catch (IOException e){
             System.out.println("Error file read: " + e);
+        }
+    }
+    
+    private static String correctLine(String fileLine) {
+        StringBuilder newLine = new StringBuilder();
+        for (char ch : fileLine.toCharArray()) {
+            if (ch == '{') stackBrackets.push(BracketType.FIGURE_LEFT);
         }
     }
     
@@ -67,7 +77,7 @@ public class BracketsCorrector {
         int indexDot = oldFileName.lastIndexOf('.');
         String namePart = oldFileName.substring(0, indexDot - 1);
         String extPart = oldFileName.substring(indexDot);
-        return namePart + "_correct1" + extPart;
+        return namePart + "_correct" + extPart;
     }
     
 }

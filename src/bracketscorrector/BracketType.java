@@ -8,12 +8,10 @@ package bracketscorrector;
 /**
  *
  * @author zigin
- * @param <T>
  */
-public interface Stack<T> {
-    void push(T element);
-    T pop();
-    T readTop();
-    boolean isEmpty();
-    boolean isFull();
+public enum BracketType {
+    FIGURE_RIGHT,
+    FIGURE_LEFT,
+    SIMPLE_RIGHT,
+    SIMPLE_LEFT
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bracketscorrector;
 
 /**
@@ -10,5 +5,25 @@ package bracketscorrector;
  * @author zigin
  */
 public class BracketInfo {
+    private BracketType type;
+    private int lineNumber;
+    private int letterNumber;
     
+    BracketInfo(BracketType type, int lineNumber, int letterNumber) {
+        this.type = type;
+        this.lineNumber = lineNumber;
+        this.letterNumber = letterNumber;
+    }
+    
+    public BracketType getType() {
+        return type;
+    }
+    
+    public int getLineNumber() {
+        return lineNumber;
+    }
+    
+    public int getLetterNumber() {
+        return letterNumber;
+    }
 }

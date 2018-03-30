@@ -12,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,14 +21,16 @@ import java.io.OutputStream;
  */
 public class BracketsCorrector {
 
-    private static StackLinkedList<BracketType> stackBrackets = new StackLinkedList<>();  
+    private static StackLinkedList<BracketInfo> stackBrackets 
+            = new StackLinkedList<>();  
+    private static List<StringBuilder> lines = new ArrayList<>();
+    private static List<BracketInfo> toDeleteBrackets = new ArrayList<>(); 
+    private static int currentLine;
     
     public static void main(String[] args) {
         
         
         correctBracketsInFile("task_brackets.rtf");
-        
-        StackLinkedList stack = new StackLinkedList();
         
     }
 
@@ -38,21 +42,98 @@ public class BracketsCorrector {
             BufferedReader buffer = new BufferedReader(
                     new InputStreamReader(fstream));
             String fileLine;
+            currentLine = 0;
             while ((fileLine = buffer.readLine()) != null) {
-                
-                fileLine = correctLine(fileLine);
-                writeLine(fileName, fileLine);
+                lines.add(new StringBuilder(fileLine));
+                findExcessBrackets(fileLine);
+                currentLine++;
             }
         } catch (IOException e){
             System.out.println("Error file read: " + e);
         }
+        deleteWrongBrackets();
+        writeToCorrectFile("task_brackets.rtf");
     }
     
-    private static String correctLine(String fileLine) {
-        StringBuilder newLine = new StringBuilder();
-        for (char ch : fileLine.toCharArray()) {
-            if (ch == '{') stackBrackets.push(BracketType.FIGURE_LEFT);
+    private static void writeToCorrectFile(String oldFileName) {
+        for (StringBuilder line : lines) {
+            writeLine(oldFileName, line.toString());            
         }
+    }
+    
+    private static void deleteWrongBrackets() {
+        for (BracketInfo wrong : toDeleteBrackets) {
+            int lineNumber = wrong.getLineNumber();
+            int letterNumber = wrong.getLetterNumber();
+            StringBuilder newline = 
+                    lines.get(lineNumber).deleteCharAt(letterNumber);
+            lines.set(lineNumber, newline);
+        }
+    }
+    
+    private static void findExcessBrackets(String fileLine) {
+
+        char[] letters = fileLine.toCharArray();
+        
+        for (int i = 0; i < letters.length; i++) {
+            //newLine.append(letters[i]);
+            switch(letters[i]) {
+                case '{':
+                    stackBrackets.push(new BracketInfo(
+                        BracketType.FIGURE_LEFT,
+                        currentLine,
+                        i
+                    ));
+                    break;
+                case '(':
+                    stackBrackets.push(new BracketInfo(
+                        BracketType.SIMPLE_LEFT,
+                        currentLine,
+                        i
+                    ));
+                    break;
+                case '}':
+                    bracketsResolve(new BracketInfo(
+                        BracketType.FIGURE_RIGHT,
+                        currentLine,
+                        i
+                    ));
+                    break;
+                case ')':
+                    bracketsResolve(new BracketInfo(
+                        BracketType.SIMPLE_RIGHT,
+                        currentLine,
+                        i
+                    ));
+                    break;
+            }
+        }
+    }
+    
+    private static void bracketsResolve(BracketInfo currentLetter) {
+        if (stackBrackets.readTop() == null) {
+            toDeleteBrackets.add(currentLetter);
+            return;
+        }  
+        BracketType opposite = stackBrackets.readTop().getType();
+        BracketType current = currentLetter.getType();
+        if (isAccord(opposite, current)) {
+            stackBrackets.pop();
+        } else {
+            while(!isAccord(opposite, current)) {
+                toDeleteBrackets.add(stackBrackets.pop());
+                opposite = stackBrackets.readTop().getType();
+            }
+            stackBrackets.pop();
+        }
+    }
+    
+    private static boolean isAccord(BracketType opposite,
+            BracketType current) {
+        return (opposite == BracketType.FIGURE_LEFT 
+                && current == BracketType.FIGURE_RIGHT)
+                || (opposite == BracketType.SIMPLE_LEFT 
+                && current == BracketType.SIMPLE_RIGHT);
     }
     
     private static void writeLine(String fileName, String fileLine) {

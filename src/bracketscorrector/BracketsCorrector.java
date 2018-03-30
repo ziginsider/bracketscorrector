@@ -12,7 +12,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author zigin
+ * Checks the file for correct bracket's tuples and corrects file if necessary
+ * 
+ * <p>Uses {@link StackLinkedList} stack implementation for keeping brackets
+ * and resolve conflict situations for tuples.
+ *
+ * @author Alex Kisel
+ * @since 2018-03-30
  */
 public class BracketsCorrector {
     private static StackLinkedList<BracketInfo> stackBrackets

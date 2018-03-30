@@ -6,8 +6,10 @@
 package bracketscorrector;
 
 /**
- *
- * @author zigin
+ * StackImplementations
+ * 
+ * @author Alex Kisel
+ * @since 2018-03-30
  */
 public class StackLinkedList<T> implements Stack<T>  {
 
@@ -24,15 +26,17 @@ public class StackLinkedList<T> implements Stack<T>  {
         }
     }
 
-    /**
-     * 
-     */
     public StackLinkedList() {
         size = 0;
         header = new Node<>(null, null);
         header.next = header;
     }
 
+    /**
+     * Set element from top of stack
+     * 
+     * @param element new element for stack
+     */
     @Override
     public void push(T element) {
         Node<T> newNode = new Node<>(element, header);
@@ -40,6 +44,11 @@ public class StackLinkedList<T> implements Stack<T>  {
         size++;
     }
 
+    /**
+     * Get element from top of stack and deletes it in stack
+     * 
+     * @return element upper element
+     */
     @Override
     public T pop() {
         Node<T> topElement = header;
@@ -48,16 +57,31 @@ public class StackLinkedList<T> implements Stack<T>  {
         return topElement.element;
     }
 
+    /**
+     * Get element from top of stack
+     * 
+     * @return element upper element
+     */
     @Override
     public T readTop() {
         return header.element;
     }
 
+    /**
+     * Checks if stack empty
+     * 
+     * @return true if stack is empty 
+     */
     @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * Checks if stack full
+     * 
+     * @return true if stack full
+     */
     @Override
     public boolean isFull() {
         return false;

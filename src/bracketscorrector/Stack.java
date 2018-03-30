@@ -6,9 +6,10 @@
 package bracketscorrector;
 
 /**
- *
- * @author zigin
- * @param <T>
+ * Methods for stack
+ * 
+ * @author Alex Kisel
+ * @since 2018-03-30
  */
 public interface Stack<T> {
     void push(T element);

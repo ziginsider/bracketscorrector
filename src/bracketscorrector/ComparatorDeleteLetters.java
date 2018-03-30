@@ -8,8 +8,10 @@ package bracketscorrector;
 import java.util.Comparator;
 
 /**
- *
- * @author zigin
+ * Implements comparator for {@link BrackerInfo}
+ * 
+ * @author Alex Kisel
+ * @since 2018-03-30
  */
  public class ComparatorDeleteLetters
             implements Comparator<BracketInfo> {

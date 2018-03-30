@@ -1,13 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bracketscorrector;
 
 /**
- *
- * @author zigin
+ * Keeps types of bracket
+ * 
+ *<p> FIGURE_RIGHT = '{'
+ *<p> FIGURE_LEFT = '}'
+ *<p> SIMPLE_RIGHT = '('
+ *<p> SIMPLE_LEFT = ')'
+ * 
+ * @author Alex Kisel
+ * @since 2018-03-30
  */
 public enum BracketType {
     FIGURE_RIGHT,
